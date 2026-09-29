@@ -98,25 +98,13 @@ class _LoginPageState extends State<LoginPage> {
     // CEK USERNAME DAN PASSWORD
     // =================================================
 
-    // Username dianggap benar jika:
-    // 1. username = "124240197"
-    // ATAU
-    // 2. username = "Username"
-    //
-    // .toLowerCase() membuat huruf menjadi huruf kecil
-    // sebelum dibandingkan.
-    bool isUsernameValid =
-        username == "124240197" ||
-        username.toLowerCase() == "Username";
+    // Username hanya dianggap benar jika:
+    // username = "124240197"
+    bool isUsernameValid = username == "124240197";
 
-
-    // Password dianggap benar jika:
-    // 1. password = "SistemInformasi"
-    // ATAU
-    // 2. password = "sisteminformasi"
-    bool isPasswordValid =
-        password == "SistemInformasi" ||
-        password.toLowerCase() == "sisteminformasi";
+    // Password hanya dianggap benar jika:
+    // password = "SistemInformasi"
+    bool isPasswordValid = password == "SistemInformasi";
 
 
     // =================================================
@@ -281,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
 
             // Informasi username.
             Text(
-              '• Username : 124240197 (atau Jane Alam)',
+              '• Username : 124240197',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 13,

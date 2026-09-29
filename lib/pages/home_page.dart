@@ -428,128 +428,78 @@ class _HomePageState extends State<HomePage> {
       // BODY
       // ============================================================
 
-      // CustomScrollView digunakan untuk membuat halaman
-      // yang dapat di-scroll dan berisi Sliver.
-      body: CustomScrollView(
+      // GridView.builder digunakan untuk membuat tampilan grid
+      // hewan secara dinamis sesuai ketentuan soal kuis.
+      body: GridView.builder(
 
-        // Slivers adalah widget khusus yang digunakan
-        // dalam CustomScrollView.
-        slivers: [
+        // Jarak padding di sekeliling Grid:
+        // horizontal 14, atas 14, dan bawah 24.
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
 
-          // ========================================================
-          // JARAK BAGIAN ATAS
-          // ========================================================
+        // Mengatur jumlah dan ukuran kolom grid.
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
 
-          // SliverToBoxAdapter digunakan untuk memasukkan
-          // widget biasa ke dalam CustomScrollView.
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 14),
-          ),
+          // 2 kolom dalam satu baris.
+          crossAxisCount: 2,
 
+          // Jarak vertikal antar item.
+          mainAxisSpacing: 12,
 
-          // ========================================================
-          // GRID HEWAN
-          // ========================================================
+          // Jarak horizontal antar item.
+          crossAxisSpacing: 12,
 
-          // SliverPadding memberikan padding pada Grid.
-          SliverPadding(
+          // Perbandingan lebar dan tinggi item.
+          childAspectRatio: 0.72,
+        ),
 
-            // Padding kiri dan kanan sebesar 14.
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+        // Jumlah item mengikuti total data hewan pada dummyAnimals.
+        itemCount: dummyAnimals.length,
 
+        // Builder untuk membangun card setiap hewan secara dinamis.
+        itemBuilder: (context, index) {
 
-            // SliverGrid digunakan untuk membuat tampilan
-            // berbentuk grid.
-            sliver: SliverGrid(
+          // Mengambil data Animal berdasarkan index.
+          //
+          // Contoh:
+          // index 0 → dummyAnimals[0]
+          // index 1 → dummyAnimals[1]
+          final Animal animal = dummyAnimals[index];
 
-              // Mengatur jumlah dan ukuran kolom.
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
+          // Membuat card hewan.
+          return _AnimalGridCard(
 
-                // 2 kolom dalam satu baris.
-                crossAxisCount: 2,
+            // Mengirim object Animal ke card.
+            animal: animal,
 
-                // Jarak vertikal antar item.
-                mainAxisSpacing: 12,
+            // Mengirim icon berdasarkan type.
+            typeIcon: _getTypeIcon(animal.type),
 
-                // Jarak horizontal antar item.
-                crossAxisSpacing: 12,
+            // Mengirim warna berdasarkan type.
+            typeColor: _getTypeColor(animal.type),
 
-                // Perbandingan lebar dan tinggi item.
-                childAspectRatio: 0.72,
-              ),
+            // Fungsi yang dijalankan ketika card diklik.
+            onTap: () {
 
+              // Navigator.push digunakan untuk membuka
+              // halaman baru.
+              //
+              // Halaman Home tetap berada di bawah stack,
+              // sehingga bisa kembali menggunakan pop().
+              Navigator.push(
+                context,
 
-              // Delegate digunakan untuk membuat item
-              // secara dinamis.
-              delegate: SliverChildBuilderDelegate(
+                // Route menuju AnimalDetailPage.
+                MaterialPageRoute(
 
-                // context = lokasi widget.
-                // index = posisi data dalam list.
-                (context, index) {
-
-                  // Mengambil data Animal berdasarkan index.
-                  //
-                  // Contoh:
-                  // index 0 → dummyAnimals[0]
-                  // index 1 → dummyAnimals[1]
-                  final Animal animal = dummyAnimals[index];
-
-
-                  // Membuat card hewan.
-                  return _AnimalGridCard(
-
-                    // Mengirim object Animal ke card.
+                  // Mengirim object animal ke halaman detail.
+                  builder: (context) => AnimalDetailPage(
                     animal: animal,
-
-                    // Mengirim icon berdasarkan type.
-                    typeIcon: _getTypeIcon(animal.type),
-
-                    // Mengirim warna berdasarkan type.
-                    typeColor: _getTypeColor(animal.type),
-
-
-                    // Fungsi yang dijalankan ketika card diklik.
-                    onTap: () {
-
-                      // Navigator.push digunakan untuk membuka
-                      // halaman baru.
-                      //
-                      // Halaman Home tetap berada di bawah stack,
-                      // sehingga bisa kembali menggunakan pop().
-                      Navigator.push(
-                        context,
-
-                        // Route menuju AnimalDetailPage.
-                        MaterialPageRoute(
-
-                          // Mengirim object animal ke halaman detail.
-                          builder: (context) =>
-                              AnimalDetailPage(
-                                animal: animal,
-                              ),
-                        ),
-                      );
-                    },
-                  );
-                },
-
-
-                // Jumlah item mengikuti jumlah data hewan.
-                childCount: dummyAnimals.length,
-              ),
-            ),
-          ),
-
-
-          // ========================================================
-          // JARAK BAGIAN BAWAH
-          // ========================================================
-
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 24),
-          ),
-        ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
 
 
